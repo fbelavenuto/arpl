@@ -473,7 +473,7 @@ function addonMenu() {
         [ -z "${ADDON}" ] && continue
         for I in ${ADDON}; do
           unset ADDONS[${I}]
-          deleteConfigKey "addons.${NAME}" "${USER_CONFIG_FILE}"
+          deleteConfigKey "addons.${I}" "${USER_CONFIG_FILE}"
         done
         DIRTY=1
         ;;
