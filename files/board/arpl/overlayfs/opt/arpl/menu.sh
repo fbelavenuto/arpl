@@ -175,9 +175,10 @@ function make() {
 
   # Check if all addon exists
   while IFS="=" read ADDON PARAM; do
-    [ -z "${KEY}" ] && continue
+    [ -z "${ADDON}" ] && continue
     if ! checkAddonExist "${ADDON}" "${PLATFORM}" "${KVER}"; then
-      echo "Addon ${ADDON} not found!"
+      dialog --backtitle "`backtitle`" --title "Error" --aspect 18 \
+        --msgbox "Addon ${ADDON} not found!" 0 0
       return 1
     fi
   done < <(readConfigMap "addons" "${USER_CONFIG_FILE}")
