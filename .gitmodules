@@ -1,0 +1,3 @@
+[submodule "redpill-lkm"]
+	path = redpill-lkm
+	url = git@github.com:fbelavenuto/redpill-lkm.git
