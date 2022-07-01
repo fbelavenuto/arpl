@@ -10,8 +10,6 @@ modules-notneeded: &modules-notneeded
   - xhci_hcd
   - uhci_hcd
 synoinfo: &synoinfo
-#  maxdisks: "15"
-#  internalportcfg: "0x78FF"
   esataportcfg: "0x00"
   usbportcfg: "0x8700"
   rss_server: "http://example.com/null.xml"

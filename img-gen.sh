@@ -17,12 +17,15 @@ rm -rf "${BR_VER}/board/arpl/p1"
 rm -rf "${BR_VER}/board/arpl/p3"
 echo "Copying files"
 cp -Ru files/* "${BR_VER}/"
+VERSION=`cat VERSION`
+sed 's/^ARPL_VERSION=.*/ARPL_VERSION="'${VERSION}'"/' -i files/board/arpl/overlayfs/opt/arpl/include/consts.sh
 
 cd "${BR_VER}"
 echo "Generating default config"
 make arpl_defconfig
+echo "Version: ${VERSION}"
 echo "Building... Drink a coffee and wait!"
 make
 cd -
-rm -f arpl.img.zip
-zip -9 arpl.img.zip arpl.img
+rm -f *.zip
+zip -9 "arpl-${VERSION}.img.zip" arpl.img

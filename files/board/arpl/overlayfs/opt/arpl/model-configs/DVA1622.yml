@@ -37,7 +37,7 @@ serial:
     - "2040"
     - "20C0"
     - "2150"
-  middle: "SBR"
+  middle: "SJR"
   suffix: "alpha"
 disks: 2
 dt: true

@@ -1,6 +1,7 @@
 !.gitkeep
 .vscode
 arpl.img*
+*.zip
 /buildroot-2022.02.2
 test.sh
 docker/Dockerfile

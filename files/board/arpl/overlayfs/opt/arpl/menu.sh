@@ -620,7 +620,7 @@ function cmdlineMenu() {
           TEXT+="\n"
         done
         TEXT+="\nPorts with color \Z1red\Zn as DUMMY, color \Z2\Zbgreen\Zn has drive connected\n"
-        TEXT+="Use this information to mount SataPortMap, DiskIdxMap and sata_remap"
+        TEXT+="Use this information to assist in creating SataPortMap, DiskIdxMap and sata_remap"
         dialog --backtitle "`backtitle`" --colors --aspect 18 \
           --msgbox "${TEXT}" 0 0
         ;;
