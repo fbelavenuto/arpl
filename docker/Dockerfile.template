@@ -1,0 +1,35 @@
+FROM alpine:3.14 AS stage
+ARG PLATFORMS="@@@PLATFORMS@@@"
+ARG TOOLKIT_VER="@@@TOOLKIT_VER@@@"
+
+# Copy downloaded toolkits
+ADD cache /cache
+# Extract toolkits
+RUN for V in ${PLATFORMS}; do \
+      echo "${V}" | while IFS=':' read PLATFORM KVER; do \
+        echo "Extracting ds.${PLATFORM}-${TOOLKIT_VER}.dev.txz" && \
+        mkdir "/opt/${PLATFORM}" && \
+        tar -xaf "/cache/ds.${PLATFORM}-${TOOLKIT_VER}.dev.txz" -C "/opt/${PLATFORM}" --strip-components=10 \
+          "usr/local/x86_64-pc-linux-gnu/x86_64-pc-linux-gnu/sys-root/usr/lib/modules/DSM-7.0/build" && \
+        echo -e "${PLATFORM}\t${KVER}" >> /opt/platforms; \
+      done; \
+    done
+
+# Final image
+FROM debian:8-slim
+ENV SHELL=/bin/bash \
+    ARCH=x86_64
+
+RUN apt update --yes && \
+    apt install --yes --no-install-recommends --no-install-suggests \
+      build-essential nano make && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=stage /opt /opt
+COPY files/ /
+
+WORKDIR /input
+VOLUME /input /output
+
+ENTRYPOINT ["/opt/do.sh"]

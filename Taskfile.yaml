@@ -1,0 +1,22 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  build-img:
+    cmds:
+      - ./img-gen.sh
+
+  build-docker-img:
+    dir: docker
+    cmds:
+      - ./build.sh
+
+  compile-lkms:
+    cmds:
+      - ./compile-lkm.sh
+
+  compile-addons:
+    dir: addons
+    cmds:
+      - ./compile-addons.sh {{.CLI_ARGS}}

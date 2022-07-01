@@ -1,0 +1,89 @@
+id: "DS918+"
+modules-notneeded: &modules-notneeded
+  - ahci
+  - i40e
+  - ixgbe
+  - igb
+  - e1000e
+  - dca
+  - etxhci_hcd
+  - xhci_hcd
+  - ehci-pci
+  - uhci_hcd
+synoinfo: &synoinfo
+  esataportcfg: "0x00"
+  support_led_brightness_adjustment: ""
+  support_leds_lp3943: ""
+  buzzeroffen: "0xffff"
+  rss_server: "http://example.com/null.xml"
+  rss_server_ssl: "https://example.com/null.xml"
+  rss_server_v2: "https://example.com/autoupdate/v2/getList"
+  update_server: "http://example.com/"
+  update_server_ssl: "https://example.com/"
+  small_info_path: "https://example.com/null"
+  updateurl: "http://example.com/"
+  myds_region_api_base_url: "https://example.com"
+  security_version_server: "https://example.com/smallupdate"
+cmdline: &cmdline
+  syno_hdd_powerup_seq: 0
+  HddHotplug: 0
+  vender_format_version: 2
+  syno_port_thaw: 1
+  syno_hdd_detect: 0
+
+platform: "apollolake"
+serial:
+  prefix:
+    - "1780"
+    - "1790"
+    - "1860"
+    - "1980"
+  middle: "PDN"
+  suffix: "numeric"
+disks: 4
+flags:
+  - "fma"
+builds:
+  42218:
+    ver: "7.0.1"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS918%2B_42218.pat"
+      hash: "a403809ab2cd476c944fdfa18cae2c2833e4af36230fa63f0cdee31a92bebba2"
+      ramdisk-hash: "4b7a7a271a3b2158d9193a4f0e75c59590949ad7b4e26d546f46cc2ee8504d51"
+      zimage-hash: "338ba514066da01d0c1f770418916b9b96f5355d88a7b55b398d2726db591fdb"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-common-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-common-disable-disabled-ports.patch"
+
+  42661:
+    ver: "7.1.0"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.1/42661-1/DSM_DS918%2B_42661.pat"
+      hash: "4e8a9d82a8a1fde5af9a934391080b7bf6b91811d9583acb73b90fb6577e22d7"
+      ramdisk-hash: "ef8c87b6e68226339e5623d048252f5be3089c0831e41298a4695f2bfa65f00e"
+      zimage-hash: "9ce0d3452f08afaf95d52292ff20cbac6d69e17d5b9953377e4ac90c9ac7397d"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-42661-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-42661-disable-disabled-ports.patch"

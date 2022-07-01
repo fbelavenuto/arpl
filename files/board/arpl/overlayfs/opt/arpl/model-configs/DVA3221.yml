@@ -1,0 +1,88 @@
+id: "DVA3221"
+modules-notneeded: &modules-notneeded
+  - ahci
+  - i40e
+  - ixgbe
+  - igb
+  - e1000e
+  - dca
+  - etxhci_hcd
+  - xhci_hcd
+  - ehci-pci
+  - uhci_hcd
+synoinfo: &synoinfo
+  esataportcfg: "0x00"
+  support_bde_internal_10g: "no"
+  support_disk_compatibility: "no"
+  rss_server: "http://example.com/null.xml"
+  rss_server_ssl: "https://example.com/null.xml"
+  rss_server_v2: "https://example.com/autoupdate/v2/getList"
+  update_server: "http://example.com/"
+  update_server_ssl: "https://example.com/"
+  small_info_path: "https://example.com/null"
+  updateurl: "http://example.com/"
+  myds_region_api_base_url: "https://example.com"
+  security_version_server: "https://example.com/smallupdate"
+cmdline: &cmdline
+  syno_hdd_powerup_seq: 0
+  HddHotplug: 0
+  vender_format_version: 2
+  syno_port_thaw: 1
+  syno_hdd_detect: 0
+
+platform: "denverton"
+serial:
+  prefix:
+    - "2030"
+    - "2040"
+    - "20C0"
+    - "2150"
+  middle: "SJR"
+  suffix: "alpha"
+flags:
+  - "fma"
+disks: 4
+builds:
+  42218:
+    ver: "7.0.1"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DVA3221_42218.pat"
+      hash: "01f101d7b310c857e54b0177068fb7250ff722dc9fa2472b1a48607ba40897ee"
+      ramdisk-hash: "0825958923a5e67d967389769cff5fb7a04a25b98a2826c4c1e8aa7b8146dc8b"
+      zimage-hash: "ef97f2d64f3f7f8c5e3f4e8fee613d385d7888826f56e119f1885a722c95c7cc"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-common-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-common-disable-disabled-ports.patch"
+
+  42661:
+    ver: "7.1.0"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.1/42661-1/DSM_DVA3221_42661.pat"
+      hash: "ed3207db40b7bac4d96411378558193b7747ebe88f0fc9c26c59c0b5c688c359"
+      ramdisk-hash: "0ff061f453bc9888b16c59baaf3617bfa6ee42044122eb1dd0eaaa18b3832381"
+      zimage-hash: "5222b5efaf7af28ff3833fd37f13100c30acba1ee201a15b2ee360e66e75b48e"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-42661-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-42661-disable-disabled-ports.patch"

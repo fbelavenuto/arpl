@@ -1,0 +1,23 @@
+A fazer
+ - Implementar update do bzimage e ramdisk online
+
+Concluidos:
+ - Generalizar código dos addons
+ - Implementar checagem de conflito entre addons *** Usado alternativa de ter listagem de módulos não necessários ***
+ - Tirar MAXDISKS dos arquivos dos modelos e adicionar menu no synoinfo para configurar máximo de HDs
+ - mudar na configs dos modelos os módulos builtin para módulos não necessários
+ - Mudar palavra "extra" para "cmdline"
+ - Implementar exibição de cmdline e synoinfo dos modelos
+ - Adicionar checagem no grub para exibir ou não menu de boot
+ - Bug no boot.sh, se usuário mudar a variável netif_num o script repassa os macX sem considerar o novo número de interfaces 
+   *** TIRADO obrigatoriedade no LKM de passar esses parâmetros ***
+ - bug com macs, com 2 placas os MACs podem se inverter, checar isso
+   *** Resolvido com solução anterior ***
+ - Verifica se plataforma vai rodar na máquina checando as flags da CPU
+ - Implementar seleção da versão do LKM (dev ou prod)
+ - Usando TTYD para acesso via web
+ - Verificar se fica legal colocar na config dos modelos os addons obrigatórios como o qjs-dtb *** Usado outra maneira ***
+ - Implementar escolha de maxdisks
+
+
+https://kb.synology.com/en-me/DSM/tutorial/What_kind_of_CPU_does_my_NAS_have

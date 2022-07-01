@@ -1,0 +1,81 @@
+id: "DS920+"
+modules-notneeded: &modules-notneeded
+  - ahci
+  - i40e
+  - ixgbe
+  - igb
+  - e1000e
+  - dca
+  - etxhci_hcd
+  - xhci_hcd
+  - ehci-pci
+  - uhci_hcd
+synoinfo: &synoinfo
+  rss_server: "http://example.com/null.xml"
+  rss_server_ssl: "https://example.com/null.xml"
+  rss_server_v2: "https://example.com/autoupdate/v2/getList"
+  update_server: "http://example.com/"
+  update_server_ssl: "https://example.com/"
+  small_info_path: "https://example.com/null"
+  updateurl: "http://example.com/"
+  myds_region_api_base_url: "https://example.com"
+  security_version_server: "https://example.com/smallupdate"
+cmdline: &cmdline
+  intel_iommu: "igfx_off"
+  HddEnableDynamicPower: 1
+  synoboot2:
+  syno_ttyS0: "serial,0x3f8"
+  syno_ttyS1: "serial,0x2f8"
+  vender_format_version: 2
+platform: "geminilake"
+serial:
+  prefix:
+    - "2030"
+    - "2040"
+    - "20C0"
+    - "2150"
+  middle: "SBR"
+  suffix: "alpha"
+disks: 4
+builds:
+  42218:
+    ver: "7.0.1"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS920%2B_42218.pat"
+      hash: "73053911bd118b432d5a2036dc62d518eed83b78b32c1eb23696d59725a14892"
+      ramdisk-hash: "e39890f4bef2e5e4eea956996b0dd92d081c6d9e7c393331131e65bbad1a17a9"
+      zimage-hash: "74d513aaa3e30d8aa4f80e202d94a68a552e9c0472f8470e133ad29080556f55"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-common-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+
+  42661:
+    ver: "7.1.0"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.1/42661-1/DSM_DS920%2B_42661.pat"
+      hash: "8076950fdad2ca58ea9b91a12584b9262830fe627794a0c4fc5861f819095261"
+      ramdisk-hash: "c8ad44826c87e065a3b05f354a639c0a86cb2fa47b88e11949604d53f3e80048"
+      zimage-hash: "1d0e5b76e08e3483f6bf06d23b5978ec498b855bde23db1f96f343db4c43337d"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-42661-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"

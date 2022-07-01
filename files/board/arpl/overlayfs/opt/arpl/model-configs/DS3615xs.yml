@@ -1,0 +1,81 @@
+id: "DS3615xs"
+modules-notneeded: &modules-notneeded
+  - ahci
+  - i40e
+  - ixgbe
+  - igb
+  - e1000e
+  - dca
+  - etxhci_hcd
+  - xhci_hcd
+  - ehci-pci
+  - uhci_hcd
+synoinfo: &synoinfo
+  esataportcfg: "0x0"
+  usbportcfg: "0x8700"
+  rss_server: "http://example.com/null.xml"
+  rss_server_ssl: "https://example.com/null.xml"
+  small_info_path: "https://example.com/null"
+  updateurl: "http://example.com/"
+  myds_region_api_base_url: "https://example.com"
+cmdline: &cmdline
+  syno_hdd_powerup_seq: 0
+  HddHotplug: 0
+  vender_format_version: 2
+  syno_port_thaw: 1
+  syno_hdd_detect: 0
+
+platform: "bromolow"
+serial:
+  prefix: 
+    - "1130"
+    - "1230"
+    - "1330"
+    - "1430"
+  middle: "LWN"
+  suffix: "numeric"
+disks: 12
+builds:
+  42218:
+    ver: "7.0.1"
+    kver: "3.10.108"
+    rd-compressed: false
+    efi-bug: yes
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3615xs_42218.pat"
+      hash: "dddd26891815ddca02d0d53c1d42e8b39058b398a4cc7b49b80c99f851cf0ef7"
+      ramdisk-hash: "4c90c3c7ee25b5fcc651552e80a9364d22823c863c834c5f43e3344a3a68af78"
+      zimage-hash: "d29b695612710376734cb5c5b5ae4f2d8afc49ffd640387e1c86010f6c7d2c8a"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-common-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-common-disable-disabled-ports.patch"
+
+  42661:
+    ver: "7.1.0"
+    kver: "3.10.108"
+    rd-compressed: false
+    efi-bug: yes
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.1/42661-1/DSM_DS3615xs_42661.pat"
+      hash: "1e95d8c63981bcf42ea2eaedfbc7acc4248ff16d129344453b7479953f9ad145"
+      ramdisk-hash: "8ee5df65bcfd25c3d1999262153dcff625714d98789bc8065e217773f8d070d8"
+      zimage-hash: "3017542c92232cb5477b0e11d82d708a9909320350b1740aab58359e85f82351"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-42661-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-42661-disable-disabled-ports.patch"

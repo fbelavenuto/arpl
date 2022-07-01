@@ -1,0 +1,60 @@
+id: "DS2422+"
+modules-notneeded: &modules-notneeded
+  - ahci
+  - i40e
+  - ixgbe
+  - igb
+  - e1000e
+  - dca
+  - etxhci_hcd
+  - xhci_hcd
+  - ehci-pci
+  - uhci_hcd
+synoinfo: &synoinfo
+  rss_server: "http://example.com/null.xml"
+  rss_server_ssl: "https://example.com/null.xml"
+  rss_server_v2: "https://example.com/autoupdate/v2/getList"
+  update_server: "http://example.com/"
+  update_server_ssl: "https://example.com/"
+  small_info_path: "https://example.com/null"
+  updateurl: "http://example.com/"
+  myds_region_api_base_url: "https://example.com"
+  security_version_server: "https://example.com/smallupdate"
+cmdline: &cmdline
+  SMBusHddDynamicPower: 1
+  vender_format_version: 2
+  syno_port_thaw: 1
+  syno_hdd_detect: 0
+  synoboot2:
+  syno_ttyS0: "serial,0x3f8"
+  syno_ttyS1: "serial,0x2f8"
+platform: "v1000"
+serial:
+  prefix:
+    - "0000"
+  middle: "XXX"
+  suffix: "numeric"
+disks: 12
+dt: true
+builds:
+  42218:
+    ver: "7.0.1"
+    kver: "4.4.180"
+    rd-compressed: false
+    efi-bug: no
+    modules-notneeded: *modules-notneeded
+    cmdline:
+      <<: *cmdline
+    synoinfo:
+      <<: *synoinfo
+    pat:
+      url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS2422%2B_42218.pat"
+      hash: "415c54934d483a2557500bc3a2e74588a0cec1266e1f0d9a82a7d3aace002471"
+      ramdisk-hash: "2b5b8dd90b2e6020ffccc2719d8bc16d9935421754a8c088d6b31dbca4e4ff7b"
+      zimage-hash: "38281a90036fffcb41cd17f05a6c7e9a1d5740a78c135980fb0c3a6d0ca1485f"
+    patch:
+      - "ramdisk-common-disable-root-pwd.patch"
+      - "ramdisk-common-init-script.patch"
+      - "ramdisk-common-post-init-script.patch"
+      - "ramdisk-common-network-hosts.patch"
+      - "ramdisk-common-disable-disabled-ports.patch"
