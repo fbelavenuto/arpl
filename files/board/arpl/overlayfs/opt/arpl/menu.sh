@@ -159,7 +159,6 @@ function addonMenu() {
   while IFS="=" read KEY VALUE; do
     [ -n "${KEY}" ] && ADDONS["${KEY}"]="${VALUE}"
   done < <(readConfigMap "addons" "${USER_CONFIG_FILE}")
-  NEXT="a"
   # Loop menu
   while true; do
     dialog --backtitle "`backtitle`" --default-item ${NEXT} \
@@ -179,7 +178,8 @@ function addonMenu() {
           echo "${ADDON} \"${DESC}\"" >> "${TMP_PATH}/menu"
         done < <(availableAddons "${PLATFORM}" "${KVER}")
         if [ ! -f "${TMP_PATH}/menu" ] ; then 
-          dialog --backtitle "`backtitle`" --msgbox "No available addons to add" 0 0 
+          dialog --backtitle "`backtitle`" --msgbox "No available addons to add" 0 0
+          NEXT='e'
           continue
         fi
         dialog --backtitle "`backtitle`" --menu "Select an addon" 0 0 0 \

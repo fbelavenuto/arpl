@@ -3,6 +3,12 @@
 version: '3'
 
 tasks:
+  build-kpatch:
+    dir: kpatch
+    cmds:
+      - make clean all
+      - mv kpatch ../files/board/arpl/overlayfs/opt/arpl/
+
   build-img:
     cmds:
       - ./img-gen.sh
