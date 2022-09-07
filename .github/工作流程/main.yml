@@ -114,3 +114,4 @@ jobs:
             arpl-${{ steps.build.outputs.VERSION }}.vmdk.zip
             .buildroot/output/images/bzImage
             .buildroot/output/images/rootfs.cpio.xz
+
