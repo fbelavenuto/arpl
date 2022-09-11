@@ -38,9 +38,9 @@ jobs:
           cp -Ru files/* .buildroot
           cd .buildroot
           echo "Generating default config"
-          make BR2_EXTERNAL=../external arpl_defconfig
+          make BR2_EXTERNAL=../external -j `nproc` arpl_defconfig
           echo "First make"
-          make BR2_EXTERNAL=../external
+          make BR2_EXTERNAL=../external -j `nproc`
 
       # Build incremental from cache
       - name: Build image
@@ -61,7 +61,7 @@ jobs:
           unzip /tmp/rp-lkms.zip -d files/board/arpl/p3/lkms
           # Get latest addons and install its
           echo "Getting latest Addons"
-          TAG=`curl -s https://api.github.com/repos/fbelavenuto/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
+          TAG=`curl -s https://api.github.com/repos/jimmyGALLAND/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
           curl -L "https://github.com/fbelavenuto/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip
           mkdir -p /tmp/addons
           unzip /tmp/addons.zip -d /tmp/addons
@@ -79,10 +79,10 @@ jobs:
           cp -Ru files/* .buildroot/
           cd .buildroot
           echo "Generating default config"
-          make BR2_EXTERNAL=../external arpl_defconfig
+          make BR2_EXTERNAL=../external -j `nproc` arpl_defconfig
           echo "Version: ${VERSION}"
           echo "Building..."
-          make BR2_EXTERNAL=../external
+          make BR2_EXTERNAL=../external -j `nproc`
           cd -
           #qemu-img convert -O vmdk arpl.img arpl.vmdk
           qemu-img convert -O vmdk -o adapter_type=lsilogic arpl.img -o subformat=monolithicFlat arpl.vmdk
