@@ -23,6 +23,7 @@ LAYOUT="`readConfigKey "layout" "${USER_CONFIG_FILE}"`"
 KEYMAP="`readConfigKey "keymap" "${USER_CONFIG_FILE}"`"
 LKM="`readConfigKey "lkm" "${USER_CONFIG_FILE}"`"
 SN="`readConfigKey "sn" "${USER_CONFIG_FILE}"`"
+AUTO_BOOT_UPGRADE="`readConfigKey "auto_boot_upgrade" "${USER_CONFIG_FILE}"`"
 
 ###############################################################################
 # Mounts backtitle dynamically
@@ -776,6 +777,7 @@ function updateMenu() {
       d "Update addons" \
       l "Update LKMs" \
       m "Update modules" \
+      t "Auto update with new DSM upgrade: \Z4${AUTO_BOOT_UPGRADE}\Zn\"" \
       e "Exit" \
       2>${TMP_PATH}/resp
     [ $? -ne 0 ] && return
@@ -819,7 +821,9 @@ function updateMenu() {
         reboot
         exit
         ;;
-
+      t) [ "${AUTO_BOOT_UPGRADE}" = "yes" ] && AUTO_BOOT_UPGRADE='no' || AUTO_BOOT_UPGRADE='yes'
+        writeConfigKey "auto_boot_upgrade" "${AUTO_BOOT_UPGRADE}" "${USER_CONFIG_FILE}"
+	;;
       d)
         dialog --backtitle "`backtitle`" --title "Update addons" --aspect 18 \
           --infobox "Checking last version" 0 0
