@@ -784,7 +784,7 @@ function updateMenu() {
         dialog --backtitle "`backtitle`" --title "Update arpl" --aspect 18 \
           --infobox "Checking last version" 0 0
         ACTUALVERSION="v${ARPL_VERSION}"
-        TAG="`curl --insecure -s https://api.github.com/repos/fbelavenuto/arpl/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`"
+        TAG="`curl --insecure -s https://api.github.com/repos/jimmygalland/arpl/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`"
         if [ $? -ne 0 -o -z "${TAG}" ]; then
           dialog --backtitle "`backtitle`" --title "Update arpl" --aspect 18 \
             --msgbox "Error checking new version" 0 0
@@ -797,13 +797,13 @@ function updateMenu() {
         fi
         dialog --backtitle "`backtitle`" --title "Update arpl" --aspect 18 \
           --infobox "Downloading last version ${TAG}" 0 0
-        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/fbelavenuto/arpl/releases/download/${TAG}/bzImage" -o /tmp/bzImage`
+        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/jimmygalland/arpl/releases/download/${TAG}/bzImage" -o /tmp/bzImage`
         if [ $? -ne 0 -o ${STATUS} -ne 200 ]; then
           dialog --backtitle "`backtitle`" --title "Update arpl" --aspect 18 \
             --msgbox "Error downloading bzImage" 0 0
           continue
         fi
-        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/fbelavenuto/arpl/releases/download/${TAG}/rootfs.cpio.xz" -o /tmp/rootfs.cpio.xz`
+        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/jimmygalland/arpl/releases/download/${TAG}/rootfs.cpio.xz" -o /tmp/rootfs.cpio.xz`
         if [ $? -ne 0 -o ${STATUS} -ne 200 ]; then
           dialog --backtitle "`backtitle`" --title "Update arpl" --aspect 18 \
             --msgbox "Error downloading rootfs.cpio.xz" 0 0
@@ -823,7 +823,7 @@ function updateMenu() {
       d)
         dialog --backtitle "`backtitle`" --title "Update addons" --aspect 18 \
           --infobox "Checking last version" 0 0
-        TAG=`curl --insecure -s https://api.github.com/repos/fbelavenuto/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
+        TAG=`curl --insecure -s https://api.github.com/repos/jimmygalland/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
         if [ $? -ne 0 -o -z "${TAG}" ]; then
           dialog --backtitle "`backtitle`" --title "Update addons" --aspect 18 \
             --msgbox "Error checking new version" 0 0
@@ -831,7 +831,7 @@ function updateMenu() {
         fi
         dialog --backtitle "`backtitle`" --title "Update addons" --aspect 18 \
           --infobox "Downloading last version" 0 0
-        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/fbelavenuto/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip`
+        STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/jimmygalland/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip`
         if [ $? -ne 0 -o ${STATUS} -ne 200 ]; then
           dialog --backtitle "`backtitle`" --title "Update addons" --aspect 18 \
             --msgbox "Error downloading new version" 0 0
