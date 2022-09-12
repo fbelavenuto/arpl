@@ -23,14 +23,38 @@ mkdir -p "${RAMDISK_PATH}"
 MODEL="`readConfigKey "model" "${USER_CONFIG_FILE}"`"
 BUILD="`readConfigKey "build" "${USER_CONFIG_FILE}"`"
 LKM="`readConfigKey "lkm" "${USER_CONFIG_FILE}"`"
+AUTO_BOOT_UPDATE="`readConfigKey "auto_boot_update" "${USER_CONFIG_FILE}"`"
+
+function do_update_arpl(){
+
+	ACTUALVERSION="v${ARPL_VERSION}"
+	TAG="`curl --insecure -s https://api.github.com/repos/jimmygalland/arpl/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`"
+	if [ $? -ne 0 -o -z "${TAG}" ]; then
+		return 2
+	fi
+	if [ "${ACTUALVERSION}" = "${TAG}" ]; then
+		return 2
+	fi
+
+	STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/jimmygalland/arpl/releases/download/${TAG}/bzImage" -o /tmp/bzImage`
+	if [ $? -ne 0 -o ${STATUS} -ne 200 ]; then
+		return 2
+	fi
+	STATUS=`curl --insecure -s -w "%{http_code}" -L "https://github.com/jimmygalland/arpl/releases/download/${TAG}/rootfs.cpio.xz" -o /tmp/rootfs.cpio.xz`
+	if [ $? -ne 0 -o ${STATUS} -ne 200 ]; then
+		return 2
+	fi
+	mv /tmp/bzImage "${ARPL_BZIMAGE_FILE}"
+	mv /tmp/rootfs.cpio.xz "${ARPL_RAMDISK_FILE}"
+	return 0
+}
 
 if [ ${BUILD} -ne ${buildnumber} ]; then
-  echo -e "\033[A\n\033[1;32mBuild number changed from \033[1;31m${BUILD}\033[1;32m to \033[1;31m${buildnumber}\033[0m"
-  echo -n "Patching Ramdisk."
-  # Update new buildnumber
-  OLDBUILD=${BUILD}
-  BUILD=${buildnumber}
-  writeConfigKey "build" "${BUILD}" "${USER_CONFIG_FILE}"
+	echo -e "\033[A\n\033[1;32mBuild number changed from \033[1;31m${BUILD}\033[1;32m to \033[1;31m${buildnumber}\033[0m"
+	echo -n "Patching Ramdisk."
+	# Update new buildnumber
+	OLDBUILD=${BUILD}
+	BUILD=${buildnumber}
 fi
 
 echo -n "."
@@ -41,15 +65,33 @@ RD_COMPRESSED="`readModelKey "${MODEL}" "builds.${BUILD}.rd-compressed"`"
 
 [ -z "${PLATFORM}" ] && die "ERROR: Platform Configuration for model ${MODEL} not found."
 
+
 if ( [ -z "${KVER}" ] && [ "${BUILD}" -gt "${OLDBUILD}" ] ); then
-  echo -e "\033[A\n\033[1;32mTry patch ramdisk with latest platform configuration\033[0m" 
-  BUILD=${OLDBUILD}
-  KVER="`readModelKey "${MODEL}" "builds.${BUILD}.kver"`"
-  RD_COMPRESSED="`readModelKey "${MODEL}" "builds.${BUILD}.rd-compressed"`"
+
+  if ( [ "${AUTO_BOOT_UPGRADE}" = "yes"] ); then
+	echo  -e "\033[A\n\033[1;32mTry do auto update arpl\033[0m"
+
+	do_update_arpl
+
+	if [ $? -ne 2]; then
+		echo  -e "\033[A\n\033[1;32mArpl update OK\033[0m"
+		echo  -e "reboot in 5 sec."
+		sleep 5
+		reboot
+	fi
+
+   fi
+
+   echo -e "\033[A\n\033[1;32mTry patch ramdisk with latest platform configuration\033[0m" 
+   BUILD=${OLDBUILD}
+   KVER="`readModelKey "${MODEL}" "builds.${BUILD}.kver"`"
+   RD_COMPRESSED="`readModelKey "${MODEL}" "builds.${BUILD}.rd-compressed"`"
+
 fi
 
 [ -z "${KVER}" ] && die "ERROR: Configuration for model ${MODEL} and buildnumber ${BUILD} not found."
 
+writeConfigKey "build" "${BUILD}" "${USER_CONFIG_FILE}"
 
 declare -A SYNOINFO
 declare -A ADDONS
