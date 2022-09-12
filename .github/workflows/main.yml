@@ -61,8 +61,8 @@ jobs:
           unzip /tmp/rp-lkms.zip -d files/board/arpl/p3/lkms
           # Get latest addons and install its
           echo "Getting latest Addons"
-          TAG=`curl -s https://api.github.com/repos/jimmyGALLAND/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
-          curl -L "https://github.com/fbelavenuto/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip
+          TAG=`curl -s https://api.github.com/repos/jimmygalland/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
+          curl -L "https://github.com/jimmygalland/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip
           mkdir -p /tmp/addons
           unzip /tmp/addons.zip -d /tmp/addons
           DEST_PATH="files/board/arpl/p3/addons"

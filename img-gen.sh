@@ -33,8 +33,8 @@ mkdir -p /tmp/addons
 if [ -d ../arpl-addons ]; then
   cp ../arpl-addons/*.addon /tmp/addons/
 else
-  TAG=`curl -s https://api.github.com/repos/fbelavenuto/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
-  curl -L "https://github.com/fbelavenuto/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip
+  TAG=`curl -s https://api.github.com/repos/jimmygalland/arpl-addons/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}'`
+  curl -L "https://github.com/jimmygalland/arpl-addons/releases/download/${TAG}/addons.zip" -o /tmp/addons.zip
   rm -rf /tmp/addons
   unzip /tmp/addons.zip -d /tmp/addons
 fi
