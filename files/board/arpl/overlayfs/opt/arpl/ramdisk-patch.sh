@@ -158,3 +158,5 @@ rm -rf "${RAMDISK_PATH}"
 RAMDISK_HASH="`sha256sum ${ORI_RDGZ_FILE} | awk '{print$1}'`"
 writeConfigKey "ramdisk-hash" "${RAMDISK_HASH}" "${USER_CONFIG_FILE}"
 echo
+
+die "STOP test"
