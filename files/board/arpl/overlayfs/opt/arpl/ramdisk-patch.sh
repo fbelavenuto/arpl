@@ -28,6 +28,7 @@ if [ ${BUILD} -ne ${buildnumber} ]; then
   echo -e "\033[A\n\033[1;32mBuild number changed from \033[1;31m${BUILD}\033[1;32m to \033[1;31m${buildnumber}\033[0m"
   echo -n "Patching Ramdisk."
   # Update new buildnumber
+  OLDBUILD=${BUILD}
   BUILD=${buildnumber}
   writeConfigKey "build" "${BUILD}" "${USER_CONFIG_FILE}"
 fi
@@ -38,8 +39,17 @@ PLATFORM="`readModelKey "${MODEL}" "platform"`"
 KVER="`readModelKey "${MODEL}" "builds.${BUILD}.kver"`"
 RD_COMPRESSED="`readModelKey "${MODEL}" "builds.${BUILD}.rd-compressed"`"
 
-# Sanity check
-[ -z "${PLATFORM}" -o -z "${KVER}" ] && die "ERROR: Configuration for model ${MODEL} and buildnumber ${BUILD} not found."
+[ -z "${PLATFORM}" ] && die "ERROR: Platform Configuration for model ${MODEL} not found."
+
+if ( [ -z "${KVER}" ] && [ "${BUILD}" -gt "${OLDBUILD}" ] ); then
+  echo -e "\033[A\n\033[1;32mTry patch ramdisk with latest platform configuration\033[0m" 
+  BUILD=${OLDBUILD}
+  KVER="`readModelKey "${MODEL}" "builds.${BUILD}.kver"`"
+  RD_COMPRESSED="`readModelKey "${MODEL}" "builds.${BUILD}.rd-compressed"`"
+fi
+
+[ -z "${KVER}" ] && die "ERROR: Configuration for model ${MODEL} and buildnumber ${BUILD} not found."
+
 
 declare -A SYNOINFO
 declare -A ADDONS
