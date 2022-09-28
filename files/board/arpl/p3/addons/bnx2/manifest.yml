@@ -1,0 +1,10 @@
+version: 1
+name: bnx2
+description: "Broadcom Netxtreme Gigabit Ethernet Driver (BY the-leaf)"
+available-for:
+  broadwell-4.4.180:
+    install-script: "install.sh"
+    copy: "broadwell-4.4.180"
+  broadwellnk-4.4.180:
+    install-script: "install.sh"
+    copy: "broadwellnk-4.4.180"
