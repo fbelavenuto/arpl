@@ -1,4 +1,4 @@
-# Automated Redpill Loader
+# Automated Redpill Loader with All in One installer (aio.sh)
 
 This particular project was created to facilitate my testing with Redpill and I decided to share it with other users.
 
@@ -16,7 +16,7 @@ I tried to make the system as user-friendly as possible, to make life easier. Th
 
 # Use
 
-To use this project, download the latest image available and burn it to a USB stick or SATA disk-on-module. Set the PC to boot from the burned media and follow the informations on the screen. When booting, the user can call the "menu.sh" command from the computer itself, access via SSH or use the virtual terminal (ttyd) by typing the address provided on the screen (http://(ip):7681). The loader will automatically increase the size of the last partition and use this space as cache if it is larger than 2GiB.
+To use this project, download the latest image available and burn it to a USB stick or SATA disk-on-module. Set the PC to boot from the burned media and follow the informations on the screen. When booting, the user can call the "menu.sh" (manual setup) or "aio.sh" (automated setup for DS3622xs+) command from the computer itself, access via SSH or use the virtual terminal (ttyd) by typing the address provided on the screen (http://(ip):7681). The loader will automatically increase the size of the last partition and use this space as cache if it is larger than 2GiB.
 
 The menu system is dynamic and I hope it is intuitive enough that the user can use it without any problems. Its allows you to choose a model, the existing buildnumber for the chosen model, type or randomly create a serial number, add/remove addons, add/remove/view "cmdline" and "synoinfo" entries, choose the LKM version, create the loader, boot, manually edit the configuration file, choose a keymap, update and exit.
 
@@ -30,8 +30,29 @@ Another important point is that the loader detects whether or not the CPU has th
 
 I developed a simple patch to no longer display the DUMMY port error on models without device-tree, the user will be able to install without having to worry about it.
 
+# All in One Loader - Confirmed working
+
+- CPU:
+  - Intel (looks like all)
+  - AMD (working for me with 5600X, if not use manual setup and select V1000)
+
+- Ethernet:
+  - Aquantia AQtion AQC107 / AQC111 / AQC113
+  - Intel E1000 / E1000e
+  - Realtek RTL 8125 / 8169
+  - VMWare VMXNet3
+  - VirtIO Net
+
+- SAS/SCSI:
+  - VMWare PVSCSI (with Comandline - SataPortMap = 1)
+  - VirtIO SCSI (with Comandline - SataPortMap = 1)
+
+- SATA:
+  - VMWare SATA
+  - Intel Native SATA 4th to 12th Gen
+
 # Thanks
 
-All code was based on the work of TTG, pocopico, jumkey and others involved in continuing TTG's original redpill-load project.
+All code was based on the work of TTG, pocopico, jumkey, fbelavenuto and others involved in continuing TTG's original redpill-load project.
 
 More information will be added in the future.
