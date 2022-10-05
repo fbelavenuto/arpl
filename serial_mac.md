@@ -1,0 +1,7 @@
+- DS3622xs+ (broadwellnk)
+  - SN: 2150SQRW1ZAHH
+  - mac1: 001132FA6CD4
+  - mac2: 001132FA6CD5
+  - mac3: 001132FA6CD6
+  - mac4: 001132FA6CD7
+  - alternative: 001132FA6CD3
