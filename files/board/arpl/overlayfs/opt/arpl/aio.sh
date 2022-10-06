@@ -155,7 +155,7 @@ echo "Network Adapter config complete" && build
 # Adding Synoinfo and Addons
 
 function build() {
-  ITEMS="`readConfigEntriesArray "builds" "${MODEL_CONFIG_PATH}/${MODEL}.yml" | sort -r`"
+  ITEMS="`readConfigEntriesArray "builds" "${MODEL_CONFIG_PATH}/${MODEL_AIO}.yml" | sort -r`"
   dialog --clear --no-items --backtitle "`backtitle`" \
     # Delete synoinfo and reload model/build synoinfo
     writeConfigKey "synoinfo" "{}" "${USER_CONFIG_FILE}"
