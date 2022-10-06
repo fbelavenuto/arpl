@@ -63,10 +63,11 @@ function backtitle() {
 
 function sataconf() {
 echo "Make DS3622xs+ SATA config"
-    writeConfigKey "model" "${MODEL_AIO}" "${USER_CONFIG_FILE}"
-    writeConfigKey "build" "${BUILD_AIO}" "${USER_CONFIG_FILE}"
-    writeConfigKey "sn" "${SN_AIO}" "${USER_CONFIG_FILE}"
-    deleteConfigKey "cmdline.SataPortMap"       "${USER_CONFIG_FILE}"
+    writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+    writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+    writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+    deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
+    deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
       # Check id model is compatible with CPU
       COMPATIBLE=1
       if [ ${RESTRICT} -eq 1 ]; then
@@ -83,10 +84,11 @@ echo "DS3622xs+ SATA config complete" && netconf
 
 function scsiconf() {
 echo "Make DS3622xs+ SCSI/SAS config"
-    writeConfigKey "model" "${MODEL_AIO}" "${USER_CONFIG_FILE}"
-    writeConfigKey "build" "${BUILD_AIO}" "${USER_CONFIG_FILE}"
-    writeConfigKey "sn" "${SN_AIO}" "${USER_CONFIG_FILE}"
-    writeConfigKey "cmdline.SataPortMap" "1"       "${USER_CONFIG_FILE}"
+    writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+    writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+    writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+    writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
+    writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
       # Check id model is compatible with CPU
       COMPATIBLE=1
       if [ ${RESTRICT} -eq 1 ]; then
