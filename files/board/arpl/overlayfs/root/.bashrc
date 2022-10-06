@@ -26,6 +26,6 @@ if [ ! -f ${HOME}/.initialized ]; then
 fi
 cd /opt/arpl
 if tty | grep -q "/dev/pts" && [ -z "${SSH_TTY}" ]; then
-  /opt/arpl/menu.sh
+  /opt/arpl/choose.sh
   exit
 fi
