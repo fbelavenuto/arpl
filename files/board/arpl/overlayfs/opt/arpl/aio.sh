@@ -80,6 +80,8 @@ function aioMenu() {
       d "DS3622xs+ SCSI/SAS" \
       s "RS4021xs+ SATA Beta" \
       m "RS4021xs+ SCSI/SAS Beta" \
+      v "DS1621xs SATA Beta" \
+      h "DS1621xs SCSI/SAS Beta" \
       n "DS920+ SATA Beta" \
       o "DS920+ SCSI/SAS Beta" \
       e "Exit" \
@@ -168,7 +170,7 @@ function aioMenu() {
           echo "RS4021xs+ SATA config complete" && netconf
         ;;
       m) NEXT='m'
-        echo "Make R4021xs+ SCSI config"
+        echo "Make RS4021xs+ SCSI config"
         MODEL_AIO=$MODEL_4021
         BUILD_AIO=$BUILD_4021
         SN_AIO=$SN_4021
@@ -193,6 +195,60 @@ function aioMenu() {
             done
           fi
           echo "RS4021xs+ SCSI config complete" && netconf
+        ;;
+      v) NEXT='v'
+        echo "Make DS1621xs SATA config"
+        MODEL_AIO=$MODEL_1621
+        BUILD_AIO=$BUILD_1621
+        SN_AIO=$SN_1621
+        MAC1_AIO=$MAC1_1621
+        MAC2_AIO=$MAC2_1621
+        MAC3_AIO=$MAC3_1621
+        MAC4_AIO=$MAC4_1621
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "DS1621xs SATA config complete" && netconf
+        ;;
+      h) NEXT='h'
+        echo "Make DS1621xs SCSI config"
+        MODEL_AIO=$MODEL_1621
+        BUILD_AIO=$BUILD_1621
+        SN_AIO=$SN_1621
+        MAC1_AIO=$MAC1_1621
+        MAC2_AIO=$MAC2_1621
+        MAC3_AIO=$MAC3_1621
+        MAC4_AIO=$MAC4_1621
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "DS1621xs SCSI config complete" && netconf
         ;;
       n) NEXT='n'
         echo "Make DS920+ SATA config"
