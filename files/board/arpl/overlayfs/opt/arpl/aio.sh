@@ -80,6 +80,8 @@ function aioMenu() {
       d "DS3622xs+ SCSI/SAS" \
       s "RS4021xs+ SATA Beta" \
       m "RS4021xs+ SCSI/SAS Beta" \
+      n "DS920+ SATA Beta" \
+      o "DS920+ SCSI/SAS Beta" \
       e "Exit" \
       2>${TMP_PATH}/resp
     [ $? -ne 0 ] && return
@@ -191,6 +193,60 @@ function aioMenu() {
             done
           fi
           echo "RS4021xs+ SCSI config complete" && netconf
+        ;;
+      n) NEXT='n'
+        echo "Make DS920+ SATA config"
+        MODEL_AIO=$MODEL_920
+        BUILD_AIO=$BUILD_920
+        SN_AIO=$SN_920
+        MAC1_AIO=$MAC1_920
+        MAC2_AIO=$MAC2_920
+        MAC3_AIO=$MAC3_920
+        MAC4_AIO=$MAC4_920
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "DS920+ SATA config complete" && netconf
+        ;;
+      o) NEXT='o'
+        echo "Make DS920+ SCSI config"
+        MODEL_AIO=$MODEL_920
+        BUILD_AIO=$BUILD_920
+        SN_AIO=$SN_920
+        MAC1_AIO=$MAC1_920
+        MAC2_AIO=$MAC2_920
+        MAC3_AIO=$MAC3_920
+        MAC4_AIO=$MAC4_920
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "DS920+ SCSI config complete" && netconf
         ;;
       e) return ;;
     esac
