@@ -61,46 +61,140 @@ function backtitle() {
 ###############################################################################
 # Make Model Config
 
-function sataconf() {
-echo "Make DS3622xs+ SATA config"
-    writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
-    writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
-    writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
-    deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
-    deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
-      # Check id model is compatible with CPU
-      COMPATIBLE=1
-      if [ ${RESTRICT} -eq 1 ]; then
-        for F in `readModelArray "${M}" "flags"`; do
-          if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
-            COMPATIBLE=0
-            FLGNEX=1
-            break
+function aioMenu() {
+  # Read 'platform' and kernel version to check if addon exists
+  PLATFORM="`readModelKey "${MODEL}" "platform"`"
+  KVER="`readModelKey "${MODEL}" "builds.${BUILD}.kver"`"
+  # Read addons from user config
+  unset ADDONS
+  declare -A ADDONS
+  while IFS="=" read KEY VALUE; do
+    [ -n "${KEY}" ] && ADDONS["${KEY}"]="${VALUE}"
+  done < <(readConfigMap "addons" "${USER_CONFIG_FILE}")
+  NEXT="a"
+  # Loop menu
+  while true; do
+    dialog --backtitle "`backtitle`" --default-item ${NEXT} \
+      --menu "Choose a option" 0 0 0 \
+      a "DS3622xs+ SATA" \
+      d "DS3622xs+ SCSI/SAS" \
+      s "RS4021xs+ SATA Beta" \
+      m "RS4021xs+ SCSI/SAS Beta" \
+      e "Exit" \
+      2>${TMP_PATH}/resp
+    [ $? -ne 0 ] && return
+    case "`<${TMP_PATH}/resp`" in
+      a) NEXT='a'
+        echo "Make DS3622xs+ SATA config"
+        MODEL_AIO=$MODEL_3622
+        BUILD_AIO=$BUILD_3622
+        SN_AIO=$SN_3622
+        MAC1_AIO=$MAC1_3622
+        MAC2_AIO=$MAC2_3622
+        MAC3_AIO=$MAC3_3622
+        MAC4_AIO=$MAC4_3622
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
           fi
-        done
-      fi
-echo "DS3622xs+ SATA config complete" && netconf
-}
-
-function scsiconf() {
-echo "Make DS3622xs+ SCSI/SAS config"
-    writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
-    writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
-    writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
-    writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
-    writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
-      # Check id model is compatible with CPU
-      COMPATIBLE=1
-      if [ ${RESTRICT} -eq 1 ]; then
-        for F in `readModelArray "${M}" "flags"`; do
-          if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
-            COMPATIBLE=0
-            FLGNEX=1
-            break
+          echo "DS3622xs+ SATA config complete" && netconf
+        ;;
+      d) NEXT='d'
+        echo "Make DS3622xs+ SCSI config"
+        MODEL_AIO=$MODEL_3622
+        BUILD_AIO=$BUILD_3622
+        SN_AIO=$SN_3622
+        MAC1_AIO=$MAC1_3622
+        MAC2_AIO=$MAC2_3622
+        MAC3_AIO=$MAC3_3622
+        MAC4_AIO=$MAC4_3622
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
           fi
-        done
-      fi
-echo "DS3622xs+ SCSI/SAS config complete" && netconf
+          echo "DS3622xs+ SCSI config complete" && netconf
+        ;;
+      s) NEXT='s'
+        echo "Make RS4021xs+ SATA config"
+        MODEL_AIO=$MODEL_4021
+        BUILD_AIO=$BUILD_4021
+        SN_AIO=$SN_4021
+        MAC1_AIO=$MAC1_4021
+        MAC2_AIO=$MAC2_4021
+        MAC3_AIO=$MAC3_4021
+        MAC4_AIO=$MAC4_4021
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.SataPortMap"         "${USER_CONFIG_FILE}"
+        deleteConfigKey "cmdline.DiskIdxMap"          "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "RS4021xs+ SATA config complete" && netconf
+        ;;
+      m) NEXT='m'
+        echo "Make R4021xs+ SCSI config"
+        MODEL_AIO=$MODEL_4021
+        BUILD_AIO=$BUILD_4021
+        SN_AIO=$SN_4021
+        MAC1_AIO=$MAC1_4021
+        MAC2_AIO=$MAC2_4021
+        MAC3_AIO=$MAC3_4021
+        MAC4_AIO=$MAC4_4021
+        writeConfigKey "model"  "${MODEL_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "build"  "${BUILD_AIO}"        "${USER_CONFIG_FILE}"
+        writeConfigKey "sn"     "${SN_AIO}"           "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.SataPortMap" "1"      "${USER_CONFIG_FILE}"
+        writeConfigKey "cmdline.DiskIdxMap" "00"      "${USER_CONFIG_FILE}"
+          # Check id model is compatible with CPU
+          COMPATIBLE=1
+          if [ ${RESTRICT} -eq 1 ]; then
+            for F in `readModelArray "${M}" "flags"`; do
+              if ! grep -q "^flags.*${F}.*" /proc/cpuinfo; then
+                COMPATIBLE=0
+                FLGNEX=1
+                break
+              fi
+            done
+          fi
+          echo "RS4021xs+ SCSI config complete" && netconf
+        ;;
+      e) return ;;
+    esac
+  done
 }
 
 ###############################################################################
