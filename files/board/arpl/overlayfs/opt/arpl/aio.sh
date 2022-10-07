@@ -88,7 +88,7 @@ function aioMenu() {
       2>${TMP_PATH}/resp
     [ $? -ne 0 ] && return
     case "`<${TMP_PATH}/resp`" in
-      a) NEXT='a'
+      a) NEXT='e'
         echo "Make DS3622xs+ SATA config"
         MODEL_AIO=$MODEL_3622
         BUILD_AIO=$BUILD_3622
@@ -115,7 +115,7 @@ function aioMenu() {
           fi
           echo "DS3622xs+ SATA config complete" && netconf
         ;;
-      d) NEXT='d'
+      d) NEXT='e'
         echo "Make DS3622xs+ SCSI config"
         MODEL_AIO=$MODEL_3622
         BUILD_AIO=$BUILD_3622
@@ -142,7 +142,7 @@ function aioMenu() {
           fi
           echo "DS3622xs+ SCSI config complete" && netconf
         ;;
-      s) NEXT='s'
+      s) NEXT='e'
         echo "Make RS4021xs+ SATA config"
         MODEL_AIO=$MODEL_4021
         BUILD_AIO=$BUILD_4021
@@ -169,7 +169,7 @@ function aioMenu() {
           fi
           echo "RS4021xs+ SATA config complete" && netconf
         ;;
-      m) NEXT='m'
+      m) NEXT='e'
         echo "Make RS4021xs+ SCSI config"
         MODEL_AIO=$MODEL_4021
         BUILD_AIO=$BUILD_4021
@@ -196,7 +196,7 @@ function aioMenu() {
           fi
           echo "RS4021xs+ SCSI config complete" && netconf
         ;;
-      v) NEXT='v'
+      v) NEXT='e'
         echo "Make DS1621xs SATA config"
         MODEL_AIO=$MODEL_1621
         BUILD_AIO=$BUILD_1621
@@ -223,7 +223,7 @@ function aioMenu() {
           fi
           echo "DS1621xs SATA config complete" && netconf
         ;;
-      h) NEXT='h'
+      h) NEXT='e'
         echo "Make DS1621xs SCSI config"
         MODEL_AIO=$MODEL_1621
         BUILD_AIO=$BUILD_1621
@@ -250,7 +250,7 @@ function aioMenu() {
           fi
           echo "DS1621xs SCSI config complete" && netconf
         ;;
-      n) NEXT='n'
+      n) NEXT='e'
         echo "Make DS920+ SATA config"
         MODEL_AIO=$MODEL_920
         BUILD_AIO=$BUILD_920
@@ -277,7 +277,7 @@ function aioMenu() {
           fi
           echo "DS920+ SATA config complete" && netconf
         ;;
-      o) NEXT='o'
+      o) NEXT='e'
         echo "Make DS920+ SCSI config"
         MODEL_AIO=$MODEL_920
         BUILD_AIO=$BUILD_920
@@ -938,8 +938,7 @@ fi
 NEXT="m"
 while true; do
   echo "- \"========== Main ========== \" "                                                 > "${TMP_PATH}/menu"
-  echo "m \"AiO Build Intel/VM Sata\" "                                                     >> "${TMP_PATH}/menu"
-  echo "n \"AiO Build Intel/VM SCSI/SAS\" "                                                 >> "${TMP_PATH}/menu"
+  echo "m \"Choose Model for AiO Loader\" "                                                 >> "${TMP_PATH}/menu"
   loaderIsConfigured && echo "b \"Boot the loader\" "                                       >> "${TMP_PATH}/menu"
   loaderIsConfigured && echo "d \"Fix Loader after DSM Update\" "                           >> "${TMP_PATH}/menu"
   echo "= \"========== More ========== \" "                                                 >> "${TMP_PATH}/menu"
@@ -955,8 +954,7 @@ while true; do
     2>${TMP_PATH}/resp
   [ $? -ne 0 ] && break
   case `<"${TMP_PATH}/resp"` in
-    m) sataconf; NEXT="b" ;;
-    n) scsiconf; NEXT="b" ;;
+    m) aioMenu ;;
     b) boot ;;
     d) make; NEXT="b" ;;
     g) alldrives ;;
