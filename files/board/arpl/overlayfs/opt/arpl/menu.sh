@@ -503,13 +503,6 @@ function extractDsmFiles() {
   RAMDISK_HASH="`readModelKey "${MODEL}" "builds.${BUILD}.pat.ramdisk-hash"`"
   ZIMAGE_HASH="`readModelKey "${MODEL}" "builds.${BUILD}.pat.zimage-hash"`"
 
-  # If we have little disk space, clean cache folder
-  if [ ${CLEARCACHE} -eq 1 ]; then
-    echo "Cleaning cache"
-    rm -rf "${CACHE_PATH}/dl"
-  fi
-  mkdir -p "${CACHE_PATH}/dl"
-
   SPACELEFT=`df --block-size=1 | awk '/'${LOADER_DEVICE_NAME}'3/{print$4}'`  # Check disk space left
 
   PAT_FILE="${MODEL}-${BUILD}.pat"
@@ -521,6 +514,13 @@ function extractDsmFiles() {
   if [ -f "${PAT_PATH}" ]; then
     echo "${PAT_FILE} cached."
   else
+    # If we have little disk space, clean cache folder
+    if [ ${CLEARCACHE} -eq 1 ]; then
+      echo "Cleaning cache"
+      rm -rf "${CACHE_PATH}/dl"
+    fi
+    mkdir -p "${CACHE_PATH}/dl"
+  
     echo "Downloading ${PAT_FILE}"
     # Discover remote file size
     FILESIZE=`curl --insecure -sLI "${PAT_URL}" | grep -i Content-Length | awk '{print$2}'`
