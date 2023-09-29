@@ -52,7 +52,7 @@ Another important point is that the loader detects whether or not the CPU has th
 
 I developed a simple patch to no longer display the DUMMY port error on models without device-tree, the user will be able to install without having to worry about it.
 
-## User proxy
+## Use proxy
 The proxy only support for terminal。
 
 For example, if you have one clashx (the default port is 7890) in the lan，follow the steps:
