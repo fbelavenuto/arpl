@@ -58,16 +58,17 @@ The http proxy only support for terminal。
 For example, if you have one clashx (the default port is 7890) in the lan，follow the steps:
 
 1. Enabel 'Allow connent from Lan'
+
 ![image](https://github.com/yunzhiclub/arpl/assets/12424383/fe024e8d-c764-4590-84cb-fc15ca7fccef)
 
-3. Get the proxy (the computer which runing clashx) ip address
-4. open arpl termianl (you can access arpl via ssh)
+2. Get the proxy (the computer which runing clashx) ip address
+3. open arpl termianl (you can access arpl via ssh)
 ```
 declare -x https_proxy="http://ipaddress:7890/"
 declare -x http_proxy="http://ipaddress:7890/"
 declare -x all_proxy="socks5:://ipaddress:7890/"
 ```
-5. Call the "menu.sh" 
+4. Call the "menu.sh" 
 
 And then the proxy is effective。
 
