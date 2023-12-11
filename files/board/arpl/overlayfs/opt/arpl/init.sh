@@ -21,6 +21,14 @@ if [ $NUM_PARTITIONS -lt 3 ]; then
   die "Loader disk not found!"
 fi
 
+while true; do
+  [ ${CNT} -eq 0 ] && break
+  SYSTEM_DISK="`blkid | grep 'LABEL="System"' | cut -d3 -f1`"
+  [ -n "${SYSTEM_DISK}" ] && break
+  CNT=$((${CNT}-1))
+  sleep 1
+done
+
 # Shows title
 clear
 TITLE="Welcome to Automated Redpill Loader v${ARPL_VERSION}"
@@ -128,13 +136,13 @@ fi
 echo ")"
 
 # Check if partition 3 occupies all free space, resize if needed
-LOADER_DEVICE_NAME=`echo ${LOADER_DISK} | sed 's|/dev/||'`
-SIZEOFDISK=`cat /sys/block/${LOADER_DEVICE_NAME}/size`
-ENDSECTOR=$((`fdisk -l ${LOADER_DISK} | awk '/'${LOADER_DEVICE_NAME}3'/{print$3}'`+1))
+SYSTEM_DEVICE_NAME=`echo ${SYSTEM_DISK} | sed 's|/dev/||'`
+SIZEOFDISK=`cat /sys/block/${SYSTEM_DEVICE_NAME}/size`
+ENDSECTOR=$((`fdisk -l ${SYSTEM_DISK} | awk '/'${SYSTEM_DEVICE_NAME}4'/{print$3}'`+1))
 if [ ${SIZEOFDISK} -ne ${ENDSECTOR} ]; then
-  echo -e "\033[1;36mResizing ${LOADER_DISK}3\033[0m"
-  echo -e "d\n\nn\n\n\n\n\nn\nw" | fdisk "${LOADER_DISK}" >"${LOG_FILE}" 2>&1 || dieLog
-  resize2fs ${LOADER_DISK}3 >"${LOG_FILE}" 2>&1 || dieLog
+  echo -e "\033[1;36mResizing ${SYSTEM_DISK}4\033[0m"
+  echo -e "d\n\nn\n\n\n\n\nn\nw" | fdisk "${SYSTEM_DISK}" >"${LOG_FILE}" 2>&1 || dieLog
+  resize2fs ${SYSTEM_DISK}4 >"${LOG_FILE}" 2>&1 || dieLog
 fi
 
 # Load keymap name
