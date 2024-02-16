@@ -52,6 +52,29 @@ Another important point is that the loader detects whether or not the CPU has th
 
 I developed a simple patch to no longer display the DUMMY port error on models without device-tree, the user will be able to install without having to worry about it.
 
+## Use proxy
+The proxy only support for terminal。
+
+For example, if you have one clashx (the default port is 7890) in the lan，follow the steps:
+
+1. Enabel 'Allow connent from Lan' (clashx only)
+
+![image](https://github.com/yunzhiclub/arpl/assets/12424383/fe024e8d-c764-4590-84cb-fc15ca7fccef)
+
+2. Get the proxy (the computer which runing clashx) ip address
+3. open arpl termianl (you can access arpl via ssh)
+```
+declare -x https_proxy="http://ipaddress:7890/"
+declare -x http_proxy="http://ipaddress:7890/"
+declare -x all_proxy="socks5:://ipaddress:7890/"
+```
+
+**Change the ipaddress** to your proxy host.
+
+4. Call the "menu.sh" 
+
+And then the proxy is effective。
+
 ## Quickstart guide
 
 After booting the loader, the following screen should appear. Type menu.sh and press `<ENTER>`:
